@@ -1,0 +1,20 @@
+name: governance-framework-supply-chain-dp-test
+version: v1
+type: manifest
+tags:
+  - Quality.Governance
+  - Tier.Generated
+  - SemanticModelAgent
+description: |
+  Governance bundle for business validation rules generated from the Data Product Builder.
+  Pair with the consolidated workflow YAML (wf-*-dq-bundle) under config-data-quality/.
+workspace: public
+metadata:
+  retry_methodology: |
+    On Soda or Minerva failure: (1) confirm Trino can read the source FQN and that engine routing matches
+    the dataset block. (2) Re-run the workflow with logLevel DEBUG. (3) If checks are flaky on large
+    tables, narrow failed-rows checks or run off-peak. (4) Escalate persistent engine errors to the
+    data platform team with request id and query text.
+  owner_note: |
+    Rules are AI-drafted from profiling and steward review in the builder; treat as starting points
+    and harden with production Soda CLIs or contract tests before mandatory enforcement.

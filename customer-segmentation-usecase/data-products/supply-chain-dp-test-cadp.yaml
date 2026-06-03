@@ -1,0 +1,100 @@
+name: supply-chain-dp-test-cadp
+version: v1beta
+entity: product
+type: data
+purpose: |
+  Objective:.
+  This data product is built on steward-approved sources using datasets such as geolocation, inventory, order items, orders, shipments, warehouses, and warehouses ranking, integrated into a unified semantic view.
+  It can be consumed for reporting, monitoring, operational analytics, and cross-functional decision support.
+  This data product is built on steward-approved sources using datasets such as geolocation, inventory, order items, orders, shipments, warehouses, and warehouses ranking, integrated into a unified semantic view.
+  It can be consumed for reporting, monitoring, operational analytics, and cross-functional decision support.
+tags:
+  - DPTier.Consumer Aligned
+  - DPDomain.Supply Chain
+  - DPUsecase.Supply Chain Control Tower and Logistics Analytics
+  - SemanticModelAgent
+description: |
+  Provides comprehensive analytics for Supply Chain Dp Test by integrating operational datasets including Geolocation, Inventory, Order Items, Orders, Shipments, Warehouses, and Warehouses Ranking.
+  Provides comprehensive analytics for Supply Chain Dp Test by integrating operational datasets including Geolocation, Inventory, Order Items, Orders, Shipments, Warehouses, and Warehouses Ranking.
+  Stewards and analysts consume consistent metrics and dimensions through the deployed semantic model for reporting, monitoring, and operational decision support use cases.
+  Stewards and analysts consume consistent metrics and dimensions through the deployed semantic model for reporting, monitoring, and operational decision support use cases.
+owner: manpreetsingh
+
+v1beta:
+  data:
+    meta:
+      title: Supply Chain Dp Test
+      sourceCodeUrl: https://github.com/sunnysnowflake02-cell/customer-segmentation-usecase/tree/main/customer-segmentation-usecase
+    collaborators:
+      - name: manpreetsingh
+        description: owner
+
+    resource:
+      description: |
+        The Supply Chain Dp Test bundle orchestrates steward-approved sources including Geolocation, Inventory, Order Items, Orders, Shipments, Warehouses, and Warehouses Ranking into one consistent analytic framework.
+        Objective:.
+        Teams use this product for shared definitions of metrics and dimensions, data quality monitoring, and operational reporting across the domain.
+      refType: dataos
+      ref: bundle:v1beta:supply-chain-dp-test-bundle
+
+    inputs:
+      - description: Geolocation - Operational data from the Supply Chain domain supporting analytics, reporting, and monitoring for this product.
+        purpose: source
+        refType: dataos
+        ref: dataos://icebase:supply_chain/geolocation
+
+      - description: Inventory - Operational data from the Supply Chain domain supporting analytics, reporting, and monitoring for this product.
+        purpose: source
+        refType: dataos
+        ref: dataos://icebase:supply_chain/inventory
+
+      - description: Order Items - Operational data from the Supply Chain domain supporting analytics, reporting, and monitoring for this product.
+        purpose: source
+        refType: dataos
+        ref: dataos://icebase:supply_chain/order_items
+
+      - description: Orders - Operational data from the Supply Chain domain supporting analytics, reporting, and monitoring for this product.
+        purpose: source
+        refType: dataos
+        ref: dataos://icebase:supply_chain/orders
+
+      - description: Shipments - Operational data from the Supply Chain domain supporting analytics, reporting, and monitoring for this product.
+        purpose: source
+        refType: dataos
+        ref: dataos://icebase:supply_chain/shipments
+
+      - description: Warehouses - Operational data from the Supply Chain domain supporting analytics, reporting, and monitoring for this product.
+        purpose: source
+        refType: dataos
+        ref: dataos://icebase:supply_chain/warehouses
+
+      - description: Warehouses Ranking - Operational data from the Supply Chain domain supporting analytics, reporting, and monitoring for this product.
+        purpose: source
+        refType: dataos
+        ref: dataos://icebase:supply_chain/warehouses_ranking
+
+    ports:
+      lens:
+        ref: lens:v1alpha:supply-chain-dp-test:public
+        refType: dataos
+        meta:
+          description: |
+            Supply Chain Dp Test semantic model providing unified access to curated metrics and dimensions for this data product.
+      rest:
+        - url: https://known-racer.mydataos.com/lens2/api/public:supply-chain-dp-test/v2/rest
+          meta:
+            description: |
+              REST API for programmatic access to the semantic model (filters and measures as exposed by the deployed Lens).
+      postgres:
+        - host: tcp.known-racer.mydataos.com
+          port: 5432
+          params:
+            ssl: true
+          meta:
+            description: |
+              PostgreSQL access for BI tools against the semantic layer (when enabled for this workspace).
+      graphql:
+        - url: https://known-racer.mydataos.com/lens2/api/public:supply-chain-dp-test/v2/graphql
+          meta:
+            description: |
+              GraphQL API for flexible queries over the semantic model schema.

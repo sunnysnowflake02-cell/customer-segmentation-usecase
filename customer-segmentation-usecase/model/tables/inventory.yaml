@@ -1,0 +1,65 @@
+tables:
+  - name: inventory
+    title: Inventory Data
+    sql: {{ load_sql('inventory') }}
+    description: Contains inventory details including stock levels and supplier information.
+    public: true
+    joins:
+      - name: warehouses
+        relationship: many_to_one
+        sql: "{TABLE}.warehouse_id = {warehouses.warehouse_id}"
+    dimensions:
+      - name: sku_name
+        description: The name of the stock keeping unit (SKU).
+        type: string
+        column: sku_name
+        public: true
+      - name: sku_id
+        description: The unique identifier for the SKU.
+        type: number
+        column: sku_id
+        primary_key: true
+        public: true
+      - name: warehouse_id
+        description: The identifier for the warehouse where the SKU is stored.
+        type: number
+        column: warehouse_id
+        public: true
+      - name: quantity_in_stock
+        description: The quantity of the SKU currently in stock.
+        type: number
+        column: quantity_in_stock
+        public: true
+      - name: warehouse_zip_code
+        description: The zip code of the warehouse location.
+        type: number
+        column: warehouse_zip_code
+        public: true
+      - name: reorder_qty
+        description: The quantity at which the SKU should be reordered.
+        type: number
+        column: reorder_qty
+        public: true
+      - name: supplier_name
+        description: The name of the supplier providing the SKU.
+        type: string
+        column: supplier_name
+        public: true
+      - name: supplier_id
+        description: The unique identifier for the supplier.
+        type: number
+        column: supplier_id
+        public: true
+    measures:
+      - name: row_count
+        description: Distinct rows at natural grain (count distinct on primary key column).
+        type: count
+        sql: "{TABLE.sku_id}"
+    segments:
+      - name: high_stock_inventory
+        sql: "{TABLE}.quantity_in_stock > 100"
+        meta:
+          secure:
+            user_groups:
+              includes:
+                - fulfillment_analyst

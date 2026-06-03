@@ -1,0 +1,28 @@
+tables:
+  - name: geolocation
+    title: Geolocation Data
+    sql: {{ load_sql('geolocation') }}
+    description: Contains geolocation data for delivery zip codes including latitude and longitude.
+    public: true
+    dimensions:
+      - name: zip_code
+        description: The zip code of the location.
+        type: number
+        column: zip_code
+        primary_key: true
+        public: true
+      - name: latitude
+        description: The latitude of the location.
+        type: number
+        column: latitude
+        public: true
+      - name: longitude
+        description: The longitude of the location.
+        type: number
+        column: longitude
+        public: true
+    measures:
+      - name: row_count
+        description: Distinct rows at natural grain (count distinct on primary key column).
+        type: count
+        sql: "{TABLE.zip_code}"

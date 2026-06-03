@@ -1,0 +1,91 @@
+tables:
+  - name: shipments
+    title: Shipments Data
+    sql: {{ load_sql('shipments') }}
+    description: Contains details of shipments including delivery status and dates.
+    public: true
+    joins:
+      - name: order_items
+        relationship: many_to_one
+        sql: "{TABLE}.order_id = {order_items.order_id}"
+      - name: warehouses
+        relationship: many_to_one
+        sql: "{TABLE}.warehouse_id = {warehouses.warehouse_id}"
+    dimensions:
+      - name: order_id
+        description: The unique identifier for the order associated with the shipment.
+        type: number
+        column: order_id
+        primary_key: true
+        public: true
+      - name: shipping_partner
+        description: The partner responsible for shipping the order.
+        type: string
+        column: shipping_partner
+        public: true
+      - name: warehouse_id
+        description: The identifier for the warehouse from which the shipment is made.
+        type: number
+        column: warehouse_id
+        public: true
+      - name: interim_units_delivered
+        description: The number of units delivered in the interim.
+        type: number
+        column: interim_units_delivered
+        public: true
+      - name: delivered_date
+        description: The date when the shipment was delivered.
+        type: time
+        column: delivered_date
+        public: true
+      - name: status
+        description: The current status of the shipment.
+        type: string
+        column: status
+        public: true
+      - name: units_pending
+        description: The number of units still pending delivery.
+        type: number
+        column: units_pending
+        public: true
+      - name: expected_delivery_date
+        description: The expected date of delivery for the shipment.
+        type: time
+        column: expected_delivery_date
+        public: true
+      - name: order_fulfillment_date
+        description: The date when the order was fulfilled.
+        type: time
+        column: order_fulfillment_date
+        public: true
+      - name: on_time_delivery
+        description: Indicates if the shipment was delivered on time.
+        type: boolean
+        column: on_time_delivery
+        public: true
+      - name: zip_code
+        description: The zip code for the delivery location of the shipment.
+        type: number
+        column: zip_code
+        public: true
+    measures:
+      - name: row_count
+        description: Distinct rows at natural grain (count distinct on primary key column).
+        type: count
+        sql: "{TABLE.order_id}"
+      - name: sum_interim_units_delivered
+        description: Sum of interim units delivered for rows in this grain.
+        type: sum
+        sql: "{TABLE.interim_units_delivered}"
+      - name: avg_interim_units_delivered
+        description: Average of interim units delivered for rows in this grain.
+        type: avg
+        sql: "{TABLE.interim_units_delivered}"
+      - name: sum_units_pending
+        description: Sum of units pending for rows in this grain.
+        type: sum
+        sql: "{TABLE.units_pending}"
+      - name: avg_units_pending
+        description: Average of units pending for rows in this grain.
+        type: avg
+        sql: "{TABLE.units_pending}"

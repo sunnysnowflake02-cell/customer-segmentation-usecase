@@ -1,0 +1,51 @@
+tables:
+  - name: order_items
+    title: Order Items Data
+    sql: {{ load_sql('order_items') }}
+    description: Contains details of items within orders including quantities and pricing.
+    public: true
+    dimensions:
+      - name: order_id
+        description: The unique identifier for the order.
+        type: number
+        column: order_id
+        primary_key: true
+        public: true
+      - name: sku_id
+        description: The unique identifier for the SKU associated with the order item.
+        type: number
+        column: sku_id
+        public: true
+      - name: category
+        description: The category of the SKU.
+        type: string
+        column: category
+        public: true
+      - name: qty
+        description: The quantity of the SKU ordered.
+        type: number
+        column: qty
+        public: true
+      - name: price
+        description: The price of the SKU at the time of the order.
+        type: number
+        column: price
+        public: true
+      - name: total_sale_value
+        description: The total sale value of the order item.
+        type: number
+        column: total_sale_value
+        public: true
+    measures:
+      - name: row_count
+        description: Distinct rows at natural grain (count distinct on primary key column).
+        type: count
+        sql: "{TABLE.order_id}"
+      - name: sum_price
+        description: Sum of price for rows in this grain.
+        type: sum
+        sql: "{TABLE.price}"
+      - name: avg_price
+        description: Average of price for rows in this grain.
+        type: avg
+        sql: "{TABLE.price}"

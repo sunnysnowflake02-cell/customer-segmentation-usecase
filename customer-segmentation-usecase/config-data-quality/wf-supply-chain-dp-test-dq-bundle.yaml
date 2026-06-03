@@ -1,0 +1,67 @@
+name: wf-supply-chain-dp-test-dq-bundle
+version: v1
+type: workflow
+tags:
+  - Quality.BusinessRule
+  - Tier.Generated
+  - SemanticModelAgent
+description: |
+  Consolidated business-rule data quality checks for this lens. One workflow;
+  multiple source datasets under stackSpec.inputs.
+workspace: public
+workflow:
+  dag:
+    - name: supply-chain-dp-test-dq-bundle
+      description: |
+        Consolidated DQ checks for approved steward rules (multi-table).
+      title: Consolidated business validation checks
+      spec:
+        stack: soda+python:1.0
+        logLevel: INFO
+        compute: runnable-default
+        resources:
+          requests:
+            cpu: 500m
+            memory: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 512Mi
+        stackSpec:
+          inputs:
+            - dataset: dataos://icebase:supply_chain/inventory
+              options:
+                engine: minerva
+                clusterName: minervac
+              checks:
+                - row_count > 0:
+                    attributes:
+                      category: Freshness
+                      description: "Table must have data"
+                - failed rows:
+                    name: quantity_check
+                    fail condition: quantity_in_stock <= reorder_qty
+                    attributes:
+                      category: Validity
+                      description: "To maintain optimal inventory levels, 'quantity_in_stock' should always exceed 'reorder_qty'. This check is crucial to prevent stockouts and ensure that the supply chain operates smoothly. Current data shows instances where this condition may not hold."
+              profile:
+                columns:
+                  - "*"
+
+            - dataset: dataos://icebase:supply_chain/shipments
+              options:
+                engine: minerva
+                clusterName: minervac
+              checks:
+                - row_count > 0:
+                    attributes:
+                      category: Freshness
+                      description: "Table must have data"
+                - failed rows:
+                    name: order_fulfillment_date_future_check
+                    fail condition: TRY_CAST(order_fulfillment_date AS DATE) > CURRENT_DATE
+                    attributes:
+                      category: Validity
+                      description: "The 'order_fulfillment_date' column should reflect dates that have already occurred to ensure data accuracy in reporting and analysis. Current profiling indicates that some fulfillment dates may be set in the future, which is not acceptable for operational integrity."
+              profile:
+                columns:
+                  - "*"

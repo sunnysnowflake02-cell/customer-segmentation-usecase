@@ -1,0 +1,53 @@
+tables:
+  - name: orders
+    title: Orders Data
+    sql: {{ load_sql('orders') }}
+    description: Contains details of customer orders including delivery information.
+    public: true
+    joins:
+      - name: geolocation
+        relationship: many_to_one
+        sql: "{TABLE}.zip_code = {geolocation.zip_code}"
+    dimensions:
+      - name: order_id
+        description: The unique identifier for the order.
+        type: number
+        column: order_id
+        primary_key: true
+        public: true
+      - name: order_creation_date
+        description: The date and time when the order was created.
+        type: time
+        column: order_creation_date
+        public: true
+      - name: customer_id
+        description: The unique identifier for the customer who placed the order.
+        type: number
+        column: customer_id
+        public: true
+      - name: delivery_address
+        description: The address where the order is to be delivered.
+        type: string
+        column: delivery_address
+        public: true
+        meta:
+          secure:
+            func: redact
+            user_groups:
+              includes:
+                - masking_redacted
+      - name: zip_code
+        description: The zip code for the delivery address.
+        type: number
+        column: zip_code
+        public: true
+      - name: delivery_date_chosen
+        description: The date chosen for delivery of the order.
+        type: time
+        column: delivery_date_chosen
+        public: true
+    measures:
+      - name: row_count
+        description: Distinct rows at natural grain (count distinct on primary key column).
+        type: count
+        sql: "{TABLE.order_id}"

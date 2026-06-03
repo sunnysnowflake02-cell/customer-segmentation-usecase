@@ -1,0 +1,29 @@
+user_groups:
+  - name: masking_redacted
+    api_scopes:
+      - meta
+      - data
+      - graphql
+      - jobs
+      - source
+    includes: '*'
+  - name: warehouse_manager
+    api_scopes:
+      - meta
+      - data
+      - graphql
+      - jobs
+      - source
+    includes:
+      - users:id:warehouse_user_1
+      - users:id:warehouse_user_2
+  - name: fulfillment_analyst
+    api_scopes:
+      - meta
+      - data
+      - graphql
+      - jobs
+      - source
+    includes:
+      - users:id:fulfillment_user_1
+      - users:id:fulfillment_user_2

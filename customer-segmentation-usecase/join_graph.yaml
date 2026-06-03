@@ -1,0 +1,45 @@
+version: v1
+lens: supply-chain-dp-test
+description: Semantic join graph for this product. Each Lens SQL file remains a single-table SELECT; relationships below define
+  how logical tables connect for analytics and validation.
+edges:
+- left_table: inventory
+  right_table: warehouses
+  left_fqn: icebase.supply_chain.inventory
+  right_fqn: icebase.supply_chain.warehouses
+  join_on:
+  - left: warehouse_id
+    right: warehouse_id
+  cardinality: many_to_one
+  id: d80cb5a4-a6d7-4095-bdd7-2945d2f9082f
+  rationale: Linking inventory to warehouses to assess stock levels.
+- left_table: orders
+  right_table: geolocation
+  left_fqn: icebase.supply_chain.orders
+  right_fqn: icebase.supply_chain.geolocation
+  join_on:
+  - left: zip_code
+    right: zip_code
+  cardinality: many_to_one
+  id: a338722e-b26e-4bc6-be3e-645859cd77da
+  rationale: Mapping delivery zip codes to geolocation for lead-time analysis.
+- left_table: shipments
+  right_table: order_items
+  left_fqn: icebase.supply_chain.shipments
+  right_fqn: icebase.supply_chain.order_items
+  join_on:
+  - left: order_id
+    right: order_id
+  cardinality: many_to_one
+  id: 446356f6-7961-42e8-9217-536898ff03bd
+  rationale: Linking shipments to order items for detailed tracking.
+- left_table: shipments
+  right_table: warehouses
+  left_fqn: icebase.supply_chain.shipments
+  right_fqn: icebase.supply_chain.warehouses
+  join_on:
+  - left: warehouse_id
+    right: warehouse_id
+  cardinality: many_to_one
+  id: ccb81a1b-571e-4f7e-ba53-7736db6caf89
+  rationale: Connecting shipments to warehouses for performance analysis.

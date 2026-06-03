@@ -1,0 +1,63 @@
+name: supply-chain-dp-test
+version: v1alpha
+type: lens
+tags:
+  - Tier.Generated
+  - SemanticModelAgent
+description: |
+  This lens provides stakeholders with a comprehensive view of the supply chain, integrating critical data points such as inventory levels, warehouse performance, and fulfillment logistics. By unifying information across various entities like orders, shipments, and delivery locations, it enables proactive decision-making and enhances operational efficiency. The inclusion of geospatial analysis allows for improved lead-time assessments, ensuring that businesses can optimize stock availability and delivery reliability. This centralized intelligence layer is essential for transitioning to a more responsive and effective Supply Chain Control Tower.
+layer: user
+owner: manpreetsingh
+workspace: public
+lens:
+  compute: runnable-default
+  runAsUser: manpreetsingh
+  secrets:
+    - name: githubrepo
+      allKeys: true
+  source:
+    type: minerva
+    name: minervac
+    catalog: icebase
+  repo:
+    url: https://github.com/sunnysnowflake02-cell/customer-segmentation-usecase
+    lensBaseDir: customer-segmentation-usecase/customer-segmentation-usecase/model
+    syncFlags:
+      - --ref=main
+  api:
+    logLevel: info
+    resources:
+      requests:
+        cpu: 250m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+  router:
+    logLevel: info
+    resources:
+      requests:
+        cpu: 250m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+  worker:
+    logLevel: info
+    resources:
+      requests:
+        cpu: 250m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+  metric:
+    logLevel: info
+    replicas: 1
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 200m
+        memory: 512Mi
